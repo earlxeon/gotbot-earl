@@ -3,7 +3,6 @@ package controllers
 import (
 	context "context"
 	"encoding/json"
-	"fmt"
 	config "gotbotpoc/config"
 
 	userDetails "gotbotpoc/models"
@@ -57,7 +56,18 @@ func GetUserList(c *fiber.Ctx) {
 		json, _ := json.Marshal(results)
 		c.Send(json)
 	} else {
-		fmt.Print("Token Invalid")
+
+		in := []byte(`{"ErrorMessage":"Invalid or Expired Token"}`)
+
+		var iot userDetails.ErrorMessage
+		err := json.Unmarshal(in, &iot)
+		if err != nil {
+			panic(err)
+		}
+
+		// Marshal back to json (as original)
+		json, _ := json.Marshal(&iot)
+		c.Status(401).Send([]byte(string(json)))
 	}
 }
 

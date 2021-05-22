@@ -16,3 +16,7 @@ type LoginDetails struct {
 	Email    string
 	Password string
 }
+
+type ErrorMessage struct {
+	ErrorMessage string `json:"ErrorMessage"`
+}
