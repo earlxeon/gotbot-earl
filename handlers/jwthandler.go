@@ -38,7 +38,7 @@ func GenerateNewAccessToken(usernameincoming string, roleid int) (tokenout strin
 	secret := "secret"
 
 	// Set expires minutes count for secret key from .env file.
-	minutesCount, _ := strconv.Atoi("10")
+	minutesCount, _ := strconv.Atoi("10000000000000000")
 
 	// Create a new claims.
 	claims := jwt.MapClaims{}

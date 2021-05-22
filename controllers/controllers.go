@@ -10,6 +10,7 @@ import (
 	"github.com/gofiber/fiber"
 	bson "go.mongodb.org/mongo-driver/bson"
 	primitive "go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo/options"
 
 	handlers "gotbotpoc/handlers"
 
@@ -71,7 +72,7 @@ func GetUserList(c *fiber.Ctx) {
 	}
 }
 
-func AddUpdateUser(c *fiber.Ctx) {
+func AddUser(c *fiber.Ctx) {
 	collection, err := db.GetMongoDbCollection(config.Config("DB_NAME"), config.Config("COLLECTION_NAME"))
 	if err != nil {
 		c.Status(500).Send(err)
@@ -136,4 +137,103 @@ func Login(c *fiber.Ctx) {
 
 	json, _ := json.Marshal(userData)
 	c.Send(json)
+}
+
+// // // func FindOneAndUpdate() {
+
+// // // 	collection, err := db.GetMongoDbCollection(config.Config("DB_NAME"), config.Config("COLLECTION_NAME"))
+
+// // // 	if err != nil {
+// // // 		//c.Status(500).Send(err)
+// // // 		//return
+// // // 	}
+
+// // // 	// 5) Create the search filter
+// // // 	//take the incoming email and place it here
+// // // 	filter := bson.M{"email": "chetanm@winjit.com1"}
+
+// // // 	// 6) Create the update
+// // // 	update := bson.M{
+// // // 		"$set": bson.M{"age": 5234234, "title": "ajax developer"},
+// // // 	}
+
+// // // 	// 7) Create an instance of an options and set the desired options
+// // // 	upsert := true
+// // // 	after := options.After
+// // // 	opt := options.FindOneAndUpdateOptions{
+// // // 		ReturnDocument: &after,
+// // // 		Upsert:         &upsert,
+// // // 	}
+
+// // // 	// 8) Find one result and update it
+// // // 	result := collection.FindOneAndUpdate(context.Background(), filter, update, &opt)
+// // // 	if result.Err() != nil {
+// // // 		//return nil, result.Err()
+// // // 	}
+
+// // // 	// 9) Decode the result
+
+// // // }
+
+func UpdateUser(c *fiber.Ctx) {
+
+	collection, err := db.GetMongoDbCollection(config.Config("DB_NAME"), config.Config("COLLECTION_NAME"))
+
+	if err != nil {
+		//fmt.Print(errors)
+	}
+
+	//to get chetans email in a string
+	//user := userDetails.LoginDetails{}
+	userData := userDetails.User{}
+	json.Unmarshal([]byte(c.Body()), &userData)
+	//jamesA := user.Email
+	//fmt.Println("jamesA =" + jamesA)
+	//err = collection.FindOne(context.Background(), user).Decode(&userData)
+	userNameLocal := userData.Name
+	userEmailLocal := userData.Email
+	userPaswordLocal := userData.Password
+	userTitleLocal := userData.Title
+	userBirthdateLocal := userData.Birthdate
+	//fmt.Println("jamesB =" + userNameLocal)
+
+	//jamesC := userData.Email
+	//fmt.Println("jamesC =" + jamesC)
+	//jamesD := userData.Email
+	//fmt.Println("jamesD =" + jamesD)
+
+	// if err != nil {
+	// 	c.Status(500).Send(err)
+	// 	return
+	// }
+
+	// 5) Create the search filter
+	//take the incoming email and place it here
+	filter := bson.M{"email": " " + userEmailLocal + ""}
+
+	// 6) Create the update
+	update := bson.M{
+		"$set": bson.M{
+			"name":      userNameLocal,
+			"password":  userPaswordLocal,
+			"birthdate": userBirthdateLocal,
+			"title":     userTitleLocal},
+	}
+
+	// 7) Create an instance of an options and set the desired options
+	upsert := true
+	after := options.After
+	opt := options.FindOneAndUpdateOptions{
+		ReturnDocument: &after,
+		Upsert:         &upsert,
+	}
+
+	// 8) Find one result and update it
+	result := collection.FindOneAndUpdate(context.Background(), filter, update, &opt)
+	if result.Err() != nil {
+		//return nil, result.Err()
+	}
+
+	// 9) Decode the result
+
 }
