@@ -43,7 +43,8 @@ func Encrypt(plainTextIncoming string) (cipherText string) {
 	cfb.XORKeyStream(ciphertext[aes.BlockSize:], []byte(b))
 	fmt.Println(cfb)
 	fmt.Println(ciphertext)
-	return string(ciphertext)
+	stringCipherText := fmt.Sprintf("%0x", ciphertext)
+	return string(stringCipherText)
 }
 
 func Decrypt(cypherTextIncoming string) (plainTextIncoming string) {

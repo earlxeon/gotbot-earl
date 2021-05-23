@@ -127,6 +127,8 @@ func Login(c *fiber.Ctx) {
 
 	json.Unmarshal([]byte(c.Body()), &user)
 
+	//using the value in user.Email we need to search through the database for the mongodbpassword like 7b27c106b1eb9cbb6c944f56a5607f91051b6d48b9a3e5f349ff6559c0c61eeb and get it based on the above value
+
 	err = collection.FindOne(context.Background(), user).Decode(&userData)
 
 	tokenincoming := handlers.GenerateNewAccessToken(user.Email, userData.Roleid)
