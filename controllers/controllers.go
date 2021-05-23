@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	config "gotbotpoc/config"
 
+	utils "gotbotpoc/utils"
+
 	userDetails "gotbotpoc/models"
 
 	"github.com/gofiber/fiber"
@@ -210,6 +212,10 @@ func UpdateUser(c *fiber.Ctx) {
 	// 5) Create the search filter
 	//take the incoming email and place it here
 	filter := bson.M{"email": " " + userEmailLocal + ""}
+
+	//logic to encrypt strings
+
+	userPaswordLocal = utils.Encrypt(userPaswordLocal)
 
 	// 6) Create the update
 	update := bson.M{
