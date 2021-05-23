@@ -235,5 +235,17 @@ func UpdateUser(c *fiber.Ctx) {
 	}
 
 	// 9) Decode the result
+	in := []byte(`{"ErrorMessage":"Value Inserted/Updated"}`)
+
+	var iot userDetails.ErrorMessage
+
+	err = json.Unmarshal(in, &iot)
+	if err != nil {
+		panic(err)
+	}
+
+	// Marshal back to json (as original)
+	json, _ := json.Marshal(&iot)
+	c.Status(401).Send([]byte(string(json)))
 
 }
